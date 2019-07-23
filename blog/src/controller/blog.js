@@ -1,44 +1,96 @@
+const {exec} = require('../db/mysql');
+
+
+/**
+ * 博客列表
+ * @param author
+ * @param keyword
+ * @returns {Promise<T | never>}
+ */
 const getList = (author, keyword) => {
-    //返回数据
-    return [
-        {
-            id: '1',
-            title: '标题A',
-            content: '内容A',
-            createTime: 1563618762987,
-            author: 'zhangsan'
-        },
-        {
-            id: '2',
-            title: '标题B',
-            content: '内容B',
-            createTime: 1563618712987,
-            author: 'lisi'
-        },
-        {
-            id: '3',
-            title: '标题C',
-            content: '内容C',
-            createTime: 1563618662987,
-            author: 'wangwu'
-        }
-    ]
+
+
+    let sql = `select * from blogs where 1=1 `;
+    if (author) {
+        sql += `and author='${author}' `
+    }
+    if (keyword) {
+        sql += `and title like '%${keyword}%' `
+    }
+    sql += `order by createtime desc;`;
+    console.log(sql);
+
+    // 返回 promise
+    return exec(sql).then(row => {
+        return row[0];
+    })
+
 };
 
+/**
+ * 博客详情
+ * @param id
+ * @returns {Promise<any> | *}
+ */
 const getDetail = (id) => {
-    //返回数据
-    return [
-        {
-            id: '1',
-            title: '标题A',
-            content: '内容A',
-            createTime: 1563618762987,
-            author: 'zhangsan'
+
+    let sql = ` select * from blogs where id = '${id}' `;
+
+    // 返回 promise
+    return exec(sql)
+};
+
+
+/**
+ * 新建博客
+ * @param blogData
+ * @returns {{id: number}}
+ */
+const newBlog = (blogData) => {
+    // blogData  是一个博客  对象  包含title content 属性
+    const {title, content, author, createTime = Date.now()} = blogData;
+
+    let sql = ` insert into blogs (title,content,createTime,author) values('${title}','${content}',${createTime},'${author}');`;
+
+    return exec(sql).then(insertData => {
+        return {
+            id: insertData.insertId
         }
-    ]
+    });
+};
+
+
+const updateBlog = (id, blogData) => {
+    const {title, content} = blogData;
+
+    let sql = ` update blogs set title='${title}', content='${content}' where id=${id}`;
+
+    // id  更新博客的id
+    // blogData  是一个博客  对象  包含title content 属性
+    return exec(sql).then(updateData => {
+        if (updateData.affectedRows > 0) {
+            return true;
+        } else {
+            return true;
+        }
+    });
+};
+const delBlog = (id,author) => {
+    let  sql = ` delete from blogs where id='${id}' and author='${author}'`;
+
+    return exec(sql).then(delData => {
+        if (delData.affectedRows > 0) {
+            return true;
+        } else {
+            return true;
+        }
+    });
 };
 
 module.exports = {
     getList,
-    getDetail
+    getDetail,
+    newBlog,
+    updateBlog,
+    delBlog
 };

@@ -18,10 +18,17 @@ const handleBlogRouter = (req, res) => {
 
     //  获取博客列表
     if (method === 'GET' && req.path === '/api/blog/list') {
-        const author = req.query.author || '';
+        let author = req.query.author || '';
         const keyword = req.query.keyword || '';
         // const listData = getList(author, keyword);
         // return new SuccessModel(listData);
+
+        if (req.query.isadmin == 1) {
+            if (loginCheckResult) {
+                return loginCheckResult;
+            }
+            author = req.session.username;
+        }
         const result = getList(author, keyword);
         return result.then(listData => {
             return new SuccessModel(listData);
@@ -38,7 +45,7 @@ const handleBlogRouter = (req, res) => {
         const result = getDetail(id);
 
         return result.then(data => {
-            return new SuccessModel(data)
+            return new SuccessModel(data[0])
         })
     }
 
@@ -47,7 +54,7 @@ const handleBlogRouter = (req, res) => {
 
 
         if (loginCheckResult) {
-            return loginCheck(req);
+            return loginCheckResult;
         }
         req.body.author = req.session.username;
         const result = newBlog(req.body);
@@ -63,7 +70,7 @@ const handleBlogRouter = (req, res) => {
     //   更新博客
     if (method === 'POST' && req.path === '/api/blog/update') {
         if (loginCheckResult) {
-            return loginCheck(req);
+            return loginCheckResult;
         }
 
 
@@ -79,13 +86,13 @@ const handleBlogRouter = (req, res) => {
 
 
     //   删除博客
-    if (method === 'POST' && req.path === '/api/blog/delete') {
+    if (method === 'POST' && req.path === '/api/blog/del') {
 
         if (loginCheckResult) {
-            return loginCheck(req);
+            return loginCheckResult;
         }
 
-        req.body.author = req.session.username;
+        const author = req.session.username;
         let result = delBlog(id, author);
         return result.then(val => {
             if (val) {

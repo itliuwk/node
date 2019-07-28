@@ -36,7 +36,6 @@ router.post('/new', loginCheck, async function (ctx, next) {
 
 
 router.post('/update', loginCheck, async function (ctx, next) {
-    console.log(ctx.request.body);
     const val = updateBlog(ctx.query.id, ctx.request.body);
     if (val) {
         ctx.body = new SuccessModel()

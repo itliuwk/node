@@ -1,0 +1,30 @@
+#password,#confirm-password,.realname{
+    margin-bottom: 20px;
+}
+
+
+#confirm-password,.realname{
+    border: 1px solid #e6e6e6;
+    width: 91%;
+    float: left;
+    height: 40px;
+    line-height: 40px;
+    padding-left:35px;
+    color: #525252;
+    font-size: 15px;
+}
+
+.box-ipt  .confirm{
+    top: 135px;
+}
+
+.register span{
+    color: #929292;
+}
+.register a{
+    color: #188ae2;
+}
+
+.icon-fl-renyuan1{
+    top: 25px;
+}

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>编辑博客</title>
+    <title>编辑文章</title>
     <style type="text/css">
         body {
             margin: 0 20px;
@@ -23,10 +23,27 @@
             width: 300px;
             height: 150px;
         }
+
+        .to-url {
+            overflow: hidden;
+        }
+
+        .to-url li {
+            float: left;
+            list-style: none;
+            padding: 0 20px;
+        }
     </style>
 </head>
 <body>
-    <h1 style="border-bottom: 1px solid #ccc; padding-bottom: 10px;">编辑博客</h1>
+<div class="to-url">
+    <ul class="to-url">
+        <li><a target="_self" href="index.html">首页</a></li>
+        <li><a target="_self" href="admin.html">后台</a></li>
+        <li><a target="_self" href="login.html" class="log-out">退出登录</a></li>
+    </ul>
+</div>
+    <h1 style="border-bottom: 1px solid #ccc; padding-bottom: 10px;">编辑文章</h1>
     <div>
         <div class="title-wrapper">
             <input id="text-title">
@@ -75,7 +92,7 @@
         const $textContent = $('#text-content')
         const $btnUpdate = $('#btn-update')
 
-        // 获取博客内容
+        // 获取文章内容
         const urlParams = getUrlParams()
         const url = '/api/blog/detail?id=' + urlParams.id
         get(url).then(res => {
@@ -111,6 +128,25 @@
                 alert('更新成功')
                 location.href = 'admin.html'
             })
+        })
+
+
+        function clearCookie() {
+            var keys = document.cookie.match(/[^ =;]+(?=\=)/g);
+            if (keys) {
+                for (var i = keys.length; i--;) {
+                    document.cookie = keys[i] + '=0;path=/;expires=' + new Date(0).toUTCString();//清除当前域名下的,例如：m.kevis.com
+                    document.cookie = keys[i] + '=0;path=/;domain=' + document.domain + ';expires=' + new Date(0).toUTCString();//清除当前域名下的，例如 .m.kevis.com
+                    document.cookie = keys[i] + '=0;path=/;domain=kevis.com;expires=' + new Date(0).toUTCString();//清除一级域名下的或指定的，例如 .kevis.com
+                }
+            }
+        }
+
+
+
+
+        $('.log-out').click(function () {
+            clearCookie()
         })
 
     </script>

@@ -1,0 +1,270 @@
+html, body {
+    background: #F9F9F9;
+    height: 100%;
+}
+
+li {
+    list-style: none;
+}
+
+.top {
+    height: 60px;
+    text-align: right;
+    line-height: 60px;
+    padding-right: 50px;
+    background-color: rgb(236, 188, 98);
+}
+
+.top img {
+    width: 50px;
+    height: 50px;
+    display: inline-block;
+    margin-top: 5px;
+}
+
+.top .admin, .time {
+    position: relative;
+    top: -15px;
+    left: 0;
+    color: #fff;
+}
+
+.time {
+    padding-right: 10px;
+}
+
+.menu {
+    display: inline-block;
+    float: left;
+    width: 25%;
+    height: calc(100% - 60px);
+    background-color: #fff;
+}
+
+.menu-ul {
+    height: 100%;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.08);
+}
+
+.menu-ul li {
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+    border-bottom: 1px solid #e6e6e6;
+    cursor: pointer;
+}
+
+.active {
+    background-color: #f1f1f1;
+}
+
+.com {
+    float: left;
+    width: 75%;
+    height: calc(100% - 60px);
+}
+
+.com-ul {
+    height: 100%;
+    position: relative;
+    padding: 0 20px;
+}
+
+.com-ul > li {
+    display: none;
+
+}
+
+.com-ul .activeBlock {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* 首页 */
+.home {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 600px;
+    text-align: center;
+    height: 200px;
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding: 30px;
+    /*    box-shadow: 1px 1px 50px rgba(0,0,0,.3);*/
+}
+
+.home input {
+    border: 1px solid #e6e6e6;
+    width: 200px;
+    float: left;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 14px;
+    color: #525252;
+    font-size: 15px;
+}
+
+.home button {
+    cursor: pointer;
+    letter-spacing: 7px;
+    display: inline-block;
+    margin: 0 auto;
+    background: rgb(236, 188, 98);
+    height: 40px;
+    border-radius: 4px;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    line-height: 40px;
+    border: 1px solid #e6e6e6;
+}
+
+.home textarea {
+    position: absolute;
+    top: 80px;
+    left: 30px;
+    display: inline-block;
+    height: 100px;
+    width: 214px;
+    border-radius: 4px;
+    font-size: 16px;
+    border: 1px solid #e6e6e6;
+    resize: none;
+}
+
+/* 首页 end */
+
+/*交易记录*/
+
+.transaction-record {
+    width: 100%;
+    height: 100%;
+}
+
+.transaction-record .record-ul-bt {
+    width: 100%;
+    display: flex;
+    overflow: hidden;
+    /*    background-color: #f1f1f1;*/
+    padding-top: 20px
+}
+
+.transaction-record .record-ul-bt {
+    border-bottom: 1px solid #e6e6e6;
+    font-weight: bold;
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.08);
+}
+
+.transaction-record .record-ul-con li {
+    display: flex;
+    width: 100%;
+}
+
+.transaction-record .record-ul-bt li {
+    text-align: center;
+    height: 50px;
+    background-color: #fff;
+    line-height: 50px;
+    float: left;
+    flex: 1;
+}
+
+.record-ul-con {
+    box-shadow: 2px 0 4px rgba(0, 0, 0, 0.08);
+}
+
+.transaction-record .record-ul-con li {
+    background-color: #fff;
+    line-height: 50px;
+    border-bottom: 1px solid #e6e6e6;
+}
+
+.transaction-record .record-ul-con li span {
+    display: inline-block;
+    height: auto;
+    flex: 1;
+    text-align: center;;
+}
+
+.transaction-record .record-ul-con li:nth-child(2) {
+    flex: 2;
+}
+
+.transaction-record .record-ul-bt li:last-child, .transaction-record .record-ul-con li span:last-child {
+    flex: 5;
+    flex-wrap: nowrap;
+}
+
+.transaction-record .record-ul-con li:hover {
+    background-color: #f6f7f9;
+}
+
+/*交易记录 end*/
+
+.pay {
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 538px;
+    text-align: center;
+    height: 80%;
+    border-radius: 4px;
+    box-sizing: border-box;
+    padding: 30px;
+}
+
+.pay img {
+    display: block;
+    position: relative;
+    top: 0;
+    left: 20px;
+}
+
+.pay input {
+    border: 1px solid #e6e6e6;
+    width: 200px;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 14px;
+    color: #525252;
+    font-size: 15px;
+}
+
+.order {
+    padding-top: 20px;
+}
+
+.pay .submit {
+    cursor: pointer;
+    letter-spacing: 7px;
+    display: inline-block;
+    margin: 10px auto;
+    background: rgb(236, 188, 98);
+    height: 40px;
+    border-radius: 4px;
+    color: white;
+    font-size: 16px;
+    text-align: center;
+    line-height: 40px;
+    border: 1px solid #e6e6e6;
+}
+
+.sign-out {
+    position: relative;
+    top: -100px;
+    right: -40px;
+    font-size: 14px;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+}

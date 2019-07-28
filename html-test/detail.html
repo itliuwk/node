@@ -4,12 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>博客详情页</title>
+    <title>文章详情页</title>
     <style type="text/css">
         body {
             margin: 0 20px;
             line-height: 1;
         }
+
         a {
             text-decoration-line: none;
         }
@@ -18,82 +19,121 @@
             font-size: 20px;
             font-weight: bold;
         }
+
         .info-container span,
         .info-container a {
             font-size: 14px;
             color: #999;
         }
+
         .content-wrapper {
             margin-top: 20px;
             border-top: 1px solid #ccc;
         }
-        #content{
+
+        #content {
             white-space: pre-wrap;
             text-indent: 2em;
+        }
+
+        .to-url {
+            overflow: hidden;
+        }
+
+        .to-url li {
+            float: left;
+            list-style: none;
+            padding: 0 20px;
         }
     </style>
 </head>
 <body>
-    <h1 id="title" class="title"></h1>
-    <div id="info-container" class="info-container"></div>
-    <div class="content-wrapper">
-        <p id="content"></p>
-    </div>
+<div class="to-url">
+    <ul class="to-url">
+        <li><a target="_self" href="index.html">首页</a></li>
+        <li><a target="_self" href="admin.html">后台</a></li>
+        <li><a target="_self" href="login.html" class="log-out">退出登录</a></li>
+    </ul>
+</div>
+<h1 id="title" class="title"></h1>
+<div id="info-container" class="info-container"></div>
+<div class="content-wrapper">
+    <p id="content"></p>
+</div>
 
-    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
-    <script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
-    <script src="https://cdn.bootcss.com/moment.js/2.23.0/locale/zh-cn.js"></script>
-    <script>
-        // 发送 get 请求
-        function get(url) {
-            return $.get(url)
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+<script src="https://cdn.bootcss.com/moment.js/2.23.0/locale/zh-cn.js"></script>
+<script>
+    // 发送 get 请求
+    function get(url) {
+        return $.get(url)
+    }
+
+    // 显示格式化的时间
+    function getFormatDate(dt) {
+        return moment(dt).format('LL')
+    }
+
+    // 获取 url 参数
+    function getUrlParams() {
+        let paramStr = location.href.split('?')[1] || ''
+        paramStr = paramStr.split('#')[0]
+        const result = {}
+        paramStr.split('&').forEach(itemStr => {
+            const arr = itemStr.split('=')
+            const key = arr[0]
+            const val = arr[1]
+            result[key] = val
+        })
+        return result
+    }
+
+    // 获取 dom 元素
+    const $title = $('#title')
+    const $infoContainer = $('#info-container')
+    const $content = $('#content')
+
+    // 获取数据
+    const urlParams = getUrlParams()
+    const url = '/api/blog/detail?id=' + urlParams.id
+    get(url).then(res => {
+
+        if (res.errno !== 0) {
+            alert('数据错误')
+            return
         }
 
-        // 显示格式化的时间
-        function getFormatDate(dt) {
-            return moment(dt).format('LL')
-        }
-
-        // 获取 url 参数
-        function getUrlParams() {
-            let paramStr = location.href.split('?')[1] || ''
-            paramStr = paramStr.split('#')[0]
-            const result = {}
-            paramStr.split('&').forEach(itemStr => {
-                const arr = itemStr.split('=')
-                const key = arr[0]
-                const val = arr[1]
-                result[key] = val
-            })
-            return result
-        }
-
-        // 获取 dom 元素
-        const $title = $('#title')
-        const $infoContainer = $('#info-container')
-        const $content = $('#content')
-
-        // 获取数据
-        const urlParams = getUrlParams()
-        const url = '/api/blog/detail?id=' + urlParams.id
-        get(url).then(res => {
-
-            if (res.errno !== 0) {
-                alert('数据错误')
-                return
-            }
-
-            // 显示数据
-            const data = res.data || {}
-            $title.text(data.title)
-            $content.text(data.content)
-            $infoContainer.append($(`
+        // 显示数据
+        const data = res.data || {}
+        $title.text(data.title)
+        $content.text(data.content)
+        $infoContainer.append($(`
                 <span>
-                    <a href="index.html?author=${data.author}">${data.author}</a>
+                    <a href="index.html?author=${data.author}" target="_self">${data.author}</a>
                 </span>
                 <span>${getFormatDate(data.createtime)}</span>
             `))
-        })
-    </script>
+
+        document.title = data.title
+    })
+
+
+    function clearCookie() {
+        var keys = document.cookie.match(/[^ =;]+(?=\=)/g);
+        if (keys) {
+            for (var i = keys.length; i--;) {
+                document.cookie = keys[i] + '=0;path=/;expires=' + new Date(0).toUTCString();//清除当前域名下的,例如：m.kevis.com
+                document.cookie = keys[i] + '=0;path=/;domain=' + document.domain + ';expires=' + new Date(0).toUTCString();//清除当前域名下的，例如 .m.kevis.com
+                document.cookie = keys[i] + '=0;path=/;domain=kevis.com;expires=' + new Date(0).toUTCString();//清除一级域名下的或指定的，例如 .kevis.com
+            }
+        }
+    }
+
+
+    $('.log-out').click(function () {
+        clearCookie()
+    })
+</script>
 </body>
 </html>

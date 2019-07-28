@@ -1,52 +1,29 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>登录</title>
+    <title>文章--登录</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/login.css">
+    <link rel="stylesheet" href="./css/iconfont.css">
 </head>
 <body>
-    <div>
-        <label>
-            用户名 <input type="text" id="textUsername"/>
-        </label>
-        <label>
-            密码 <input type="password" id="textPassword"/>
-        </label>
-        <button id="btnLogin">登录</button>
+<img class="img-logo" src="./img/footer_bar_logo.png" height="155" width="499"/>
+<div id="box">
+    <div class="box-ipt">
+        <i class="iconfont icon-fl-renyuan"></i>
+        <input type="text" id="account-number" placeholder="请输入您的账号" value="">
+        <i class="iconfont icon-mima"></i>
+        <input type="password" id="password" placeholder="登录密码" value="">
     </div>
-    
-    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
-    <script>
-        // 发送 post 请求
-        function post(url, data = {}) {
-            return $.ajax({
-                type: 'post',
-                url,
-                data: JSON.stringify(data),
-                contentType: "application/json",
-            })
-        }
-
-        $('#btnLogin').click(() => {
-            const username = $('#textUsername').val()
-            const password = $('#textPassword').val()
-            const url = '/api/user/login'
-            const data = {
-                username,
-                password
-            }
-            post(url, data).then(res => {
-                if (res.errno === 0) {
-                    // 登录成功
-                    location.href = 'admin.html'
-                } else {
-                    // 登录失败
-                    alert(res.message)
-                }
-            })
-        })
-    </script>
+    <button type="submit" class="user_login_btn">登录</button>
+    <p class="register">
+        <span>没有账号,我要</span>  <a href="register.html">注册</a>
+   <!--     <a href="register.html">没有账号,我要去<span>注册</span>-->
+    </p>
+</div>
+<script src="js/plugins/jquery.min.js"></script>
+<script src="js/page/login.js"></script>
 </body>
 </html>

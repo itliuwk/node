@@ -7,6 +7,8 @@ const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
 const session = require('koa-generic-session');
 const redisStore = require('koa-redis');
+// 下面以koa2-cors为例，
+const cors = require('koa2-cors');
 
 
 
@@ -17,6 +19,15 @@ const {REDIS_CONF} = require('./conf/db');
 
 // error handler
 onerror(app)
+
+
+app.use(cors({
+    exposeHeaders: ['WWW-Authenticate', 'Server-Authorization', 'Date'],
+    maxAge: 100,
+    credentials: true,
+    allowMethods: ['GET', 'POST', 'OPTIONS'],
+    allowHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Custom-Header', 'anonymous'],
+}));
 
 // middlewares
 app.use(bodyparser({
@@ -37,6 +48,9 @@ app.use(async (ctx, next) => {
     const ms = new Date() - start
     console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
+
+
+
 
 //配置 session
 app.keys = ['liuwk'];

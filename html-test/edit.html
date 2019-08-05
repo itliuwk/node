@@ -10,15 +10,19 @@
             margin: 0 20px;
             line-height: 1;
         }
+
         a {
             text-decoration-line: none;
         }
+
         .title-wrapper {
             margin-bottom: 10px;
         }
+
         .title-wrapper input {
             width: 300px;
         }
+
         .content-wrapper textarea {
             width: 300px;
             height: 150px;
@@ -43,112 +47,111 @@
         <li><a target="_self" href="login.html" class="log-out">退出登录</a></li>
     </ul>
 </div>
-    <h1 style="border-bottom: 1px solid #ccc; padding-bottom: 10px;">编辑文章</h1>
-    <div>
-        <div class="title-wrapper">
-            <input id="text-title">
-        </div>
-        <div class="content-wrapper">
-            <textarea id="text-content"></textarea>
-        </div>
-        <div>
-            <button id="btn-update">保存</button>
-        </div>
+<h1 style="border-bottom: 1px solid #ccc; padding-bottom: 10px;">编辑文章</h1>
+<div>
+    <div class="title-wrapper">
+        <input id="text-title">
     </div>
+    <div class="content-wrapper">
+        <textarea id="text-content"></textarea>
+    </div>
+    <div>
+        <button id="btn-update">保存</button>
+    </div>
+</div>
 
-    <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
-    <script>
-        // 发送 get 请求
-        function get(url) {
-            return $.get(url)
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script src="js/index.js"></script>
+<script>
+    // 发送 get 请求
+    function get(url) {
+        return $.get(url)
+    }
+
+    // 发送 post 请求
+    function post(url, data = {}) {
+        return $.ajax({
+            type: 'post',
+            url,
+            data: JSON.stringify(data),
+            contentType: "application/json",
+        })
+    }
+
+    // 获取 url 参数
+    function getUrlParams() {
+        let paramStr = location.href.split('?')[1] || ''
+        paramStr = paramStr.split('#')[0]
+        const result = {}
+        paramStr.split('&').forEach(itemStr => {
+            const arr = itemStr.split('=')
+            const key = arr[0]
+            const val = arr[1]
+            result[key] = val
+        })
+        return result
+    }
+
+    // 获取 dom 元素
+    const $textTitle = $('#text-title')
+    const $textContent = $('#text-content')
+    const $btnUpdate = $('#btn-update')
+
+    // 获取文章内容
+    const urlParams = getUrlParams()
+    const url = CON_API + '/api/blog/detail?id=' + urlParams.id
+    get(url).then(res => {
+        if (res.errno !== 0) {
+            alert('操作错误')
+            return
         }
 
-        // 发送 post 请求
-        function post(url, data = {}) {
-            return $.ajax({
-                type: 'post',
-                url,
-                data: JSON.stringify(data),
-                contentType: "application/json",
-            })
+        // 显示数据
+        const data = res.data || {}
+        $textTitle.val(data.title)
+        $textContent.val(data.content)
+        $btnUpdate.attr('data-id', data.id)
+    })
+
+    // 提交修改内容
+    $btnUpdate.click(function () {
+        const $this = $(this)
+        const id = $this.attr('data-id')
+        const title = $textTitle.val()
+        const content = $textContent.val()
+
+        const url = CON_API + '/api/blog/update?id=' + id
+        const data = {
+            title,
+            content
         }
-
-        // 获取 url 参数
-        function getUrlParams() {
-            let paramStr = location.href.split('?')[1] || ''
-            paramStr = paramStr.split('#')[0]
-            const result = {}
-            paramStr.split('&').forEach(itemStr => {
-                const arr = itemStr.split('=')
-                const key = arr[0]
-                const val = arr[1]
-                result[key] = val
-            })
-            return result
-        }
-
-        // 获取 dom 元素
-        const $textTitle = $('#text-title')
-        const $textContent = $('#text-content')
-        const $btnUpdate = $('#btn-update')
-
-        // 获取文章内容
-        const urlParams = getUrlParams()
-        const url = '/api/blog/detail?id=' + urlParams.id
-        get(url).then(res => {
+        post(url, data).then(res => {
             if (res.errno !== 0) {
                 alert('操作错误')
                 return
             }
-
-            // 显示数据
-            const data = res.data || {}
-            $textTitle.val(data.title)
-            $textContent.val(data.content)
-            $btnUpdate.attr('data-id', data.id)
+            alert('更新成功')
+            location.href = 'admin.html'
         })
-
-        // 提交修改内容
-        $btnUpdate.click(function () {
-            const $this = $(this)
-            const id = $this.attr('data-id')
-            const title = $textTitle.val()
-            const content = $textContent.val()
-
-            const url = '/api/blog/update?id=' + id
-            const data = {
-                title,
-                content
-            }
-            post(url, data).then(res => {
-                if (res.errno !== 0) {
-                    alert('操作错误')
-                    return
-                }
-                alert('更新成功')
-                location.href = 'admin.html'
-            })
-        })
+    })
 
 
-        function clearCookie() {
-            var keys = document.cookie.match(/[^ =;]+(?=\=)/g);
-            if (keys) {
-                for (var i = keys.length; i--;) {
-                    document.cookie = keys[i] + '=0;path=/;expires=' + new Date(0).toUTCString();//清除当前域名下的,例如：m.kevis.com
-                    document.cookie = keys[i] + '=0;path=/;domain=' + document.domain + ';expires=' + new Date(0).toUTCString();//清除当前域名下的，例如 .m.kevis.com
-                    document.cookie = keys[i] + '=0;path=/;domain=kevis.com;expires=' + new Date(0).toUTCString();//清除一级域名下的或指定的，例如 .kevis.com
-                }
+    function clearCookie() {
+        var keys = document.cookie.match(/[^ =;]+(?=\=)/g);
+        if (keys) {
+            for (var i = keys.length; i--;) {
+                document.cookie = keys[i] + '=0;path=/;expires=' + new Date(0).toUTCString();//清除当前域名下的,例如：m.kevis.com
+                document.cookie = keys[i] + '=0;path=/;domain=' + document.domain + ';expires=' + new Date(0).toUTCString();//清除当前域名下的，例如 .m.kevis.com
+                document.cookie = keys[i] + '=0;path=/;domain=kevis.com;expires=' + new Date(0).toUTCString();//清除一级域名下的或指定的，例如 .kevis.com
             }
         }
+    }
 
 
+    $('.log-out').click(function () {
+        clearCookie()
+    })
 
-
-        $('.log-out').click(function () {
-            clearCookie()
-        })
-
-    </script>
+</script>
 </body>
 </html>

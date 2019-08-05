@@ -4,6 +4,9 @@
 
 
 
+
+
+
 // 发送 post 请求
 function post(url, data = {}) {
     return $.ajax({
@@ -22,7 +25,7 @@ $('.user_login_btn').click(function () {
     localStorage.setItem('username',username);
 
 
-    const url = '/api/user/register';
+    const url =CON_API + '/api/user/register';
     const data = {
         username,
         password,

@@ -3,8 +3,6 @@
  */
 
 
-
-
 // 发送 post 请求
 function post(url, data = {}) {
     return $.ajax({
@@ -22,7 +20,8 @@ $('.user_login_btn').click(function () {
     localStorage.setItem('username', username);
 
 
-    const url = '/api/user/login'
+    const url = CON_API + '/api/user/login';
+    console.log(url);
     const data = {
         username,
         password

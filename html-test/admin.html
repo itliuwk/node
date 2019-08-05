@@ -39,6 +39,7 @@
             padding: 0 20px;
         }
     </style>
+
 </head>
 <body>
 <div class="to-url">
@@ -64,6 +65,7 @@
 </table>
 
 <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.js"></script>
+<script src="js/index.js"></script>
 <script>
     // 发送 get 请求
     function get(url) {
@@ -101,7 +103,7 @@
     const $logOut = $('.log-out')
 
     // 拼接接口 url
-    let url = '/api/blog/list?isadmin=1'  // 增加一个 isadmin=1 参数，使用登录者的用户名，后端也需要修改 ！！！
+    let url = CON_API+ '/api/blog/list?isadmin=1'  // 增加一个 isadmin=1 参数，使用登录者的用户名，后端也需要修改 ！！！
     const urlParams = getUrlParams()
     if (urlParams.keyword) {
         url += '&keyword=' + urlParams.keyword
@@ -110,7 +112,7 @@
     // 加载数据
     get(url).then(res => {
         if (res.errno !== 0) {
-            alert('数据错误，请重新登录')
+            alert('数据错误，请重新登录');
             return
         }
 
@@ -147,10 +149,10 @@
         }
 
         if (confirm('确定删除？')) {
-            const url = '/api/blog/del?id=' + $target.attr('data-id')
+            const url =CON_API+ '/api/blog/del?id=' + $target.attr('data-id')
             post(url).then(res => {
                 if (res.errno !== 0) {
-                    alert('操作错误')
+                    alert('操作错误');
                     return
                 }
                 location.href = location.href

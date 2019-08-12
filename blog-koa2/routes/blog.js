@@ -7,15 +7,14 @@ router.prefix('/api/blog');
 
 router.get('/list', async function (ctx, next) {
     let author = ctx.query.author || '';
+    let username = ctx.query.username || '';
     const keyword = ctx.query.keyword || '';
 
-    if (ctx.query.isadmin == 1) {
-        if (ctx.session.username == null) {
-            ctx.body = new ErrorModel('未登录');
-            return false;
-        }
-        author = ctx.session.username;
+    if (username == null) {
+        ctx.body = new ErrorModel('未登录');
+        return false;
     }
+    author = username;
     const listData = await getList(author, keyword);
 
     ctx.body = new SuccessModel(listData);

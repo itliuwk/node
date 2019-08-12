@@ -103,7 +103,7 @@
     const $logOut = $('.log-out')
 
     // 拼接接口 url
-    let url = CON_API+ '/api/blog/list?isadmin=1'  // 增加一个 isadmin=1 参数，使用登录者的用户名，后端也需要修改 ！！！
+    let url = CON_API+ '/api/blog/list?isadmin=1&username='+localStorage.getItem('username');  // 增加一个 isadmin=1 参数，使用登录者的用户名，后端也需要修改 ！！！
     const urlParams = getUrlParams()
     if (urlParams.keyword) {
         url += '&keyword=' + urlParams.keyword

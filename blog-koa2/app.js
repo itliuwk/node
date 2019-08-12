@@ -53,19 +53,19 @@ app.use(async (ctx, next) => {
 
 
 //配置 session
-app.keys = ['liuwk'];
-app.use(session({
-    // 配置cookie
-    cookie: {
-        path: '/',
-        httpOnly: true,
-        maxAge: 24 * 60 * 60 * 1000
-    },
-
-    store: redisStore({
-        all: `${REDIS_CONF.host}:${REDIS_CONF.port}`
-    })
-}));
+// app.keys = ['liuwk'];
+// app.use(session({
+//     // 配置cookie
+//     cookie: {
+//         path: '/',
+//         httpOnly: true,
+//         maxAge: 24 * 60 * 60 * 1000
+//     },
+//
+//     store: redisStore({
+//         all: `${REDIS_CONF.host}:${REDIS_CONF.port}`
+//     })
+// }));
 
 // routes
 

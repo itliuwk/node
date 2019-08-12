@@ -22,7 +22,6 @@ const Register = async (username, password, realname) => {
 
 
     const user = await exec(userSql);
-    console.log(user);
 
     if (user.length === 0) {
         const sql = ` insert into users(username,password,realname) values(${username},${password},${realname}); `;

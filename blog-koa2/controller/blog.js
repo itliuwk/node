@@ -51,9 +51,9 @@ const getDetail = async (id) => {
  */
 const newBlog = async (blogData) => {
     // blogData  是一个博客  对象  包含title content 属性
-    const {title, content, author, createTime = Date.now()} = blogData;
+    const {title, subtitle, content, author, createTime = Date.now()} = blogData;
 
-    let sql = ` insert into blogs (title,content,createTime,author) values('${title}','${content}',${createTime},'${author}');`;
+    let sql = ` insert into blogs (title,subtitle,content,createTime,author) values('${title}','${subtitle}','${content}',${createTime},'${author}');`;
 
     return await exec(sql).then(insertData => {
         return {
@@ -66,7 +66,7 @@ const newBlog = async (blogData) => {
 const updateBlog = async (id, blogData) => {
     const {title, content} = blogData;
 
-    let sql = ` update blogs set title='${title}', content='${content}' where id=${id}`;
+    let sql = ` update blogs set title='${title}', subtitle='${subtitle}', content='${content}' where id=${id}`;
 
 
     const updateData = await exec(sql);

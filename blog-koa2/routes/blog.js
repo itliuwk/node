@@ -26,15 +26,15 @@ router.get('/detail', async function (ctx, next) {
 });
 
 
-router.post('/new', loginCheck, async function (ctx, next) {
+router.post('/new', async function (ctx, next) {
     const body = ctx.request.body;
-    body.author = ctx.session.username;
+    // body.author = ctx.session.username;
     const data = await newBlog(body);
     ctx.body = new SuccessModel(data);
 });
 
 
-router.post('/update', loginCheck, async function (ctx, next) {
+router.post('/update', async function (ctx, next) {
     const val = updateBlog(ctx.query.id, ctx.request.body);
     if (val) {
         ctx.body = new SuccessModel()
@@ -44,7 +44,7 @@ router.post('/update', loginCheck, async function (ctx, next) {
 });
 
 
-router.post('/del', loginCheck, async function (ctx, next) {
+router.post('/del', async function (ctx, next) {
     const author = ctx.session.username;
     const val = await delBlog(ctx.query.id, author);
     if (val) {

@@ -10,10 +10,11 @@ router.prefix('/api/user');
 router.post('/login', async function (ctx, next) {
     let {username, password} = ctx.request.body;
     const data = await login(username, password);
+    console.log(data);
     if (data.username) {
-        ctx.session.username = data.username;
-        ctx.session.realname = data.realname;
-        ctx.body = new SuccessModel();
+        // ctx.session.username = data.username;
+        // ctx.session.realname = data.realname;
+        ctx.body = new SuccessModel(data);
         return false;
     }
 

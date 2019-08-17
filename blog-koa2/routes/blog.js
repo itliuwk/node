@@ -45,7 +45,7 @@ router.post('/update', async function (ctx, next) {
 
 
 router.post('/del', async function (ctx, next) {
-    const author = ctx.session.username;
+    const author =  ctx.request.body.username;
     const val = await delBlog(ctx.query.id, author);
     if (val) {
         ctx.body = new SuccessModel()

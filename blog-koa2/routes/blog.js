@@ -1,5 +1,5 @@
 const router = require('koa-router')();
-const {getList, getDetail, newBlog, updateBlog, delBlog} = require('../controller/blog');
+const {getList,getListCount, getDetail, newBlog, updateBlog, delBlog} = require('../controller/blog');
 const {SuccessModel, ErrorModel} = require('../model/resModel');
 const loginCheck = require('../middleware/loginCheck');
 
@@ -9,16 +9,32 @@ router.get('/list', async function (ctx, next) {
     let author = ctx.query.author || '';
     let username = ctx.query.username || '';
     const keyword = ctx.query.keyword || '';
+    const page = ctx.query.page || '';
+    const total = ctx.query.total || '';
 
     if (username == null) {
         ctx.body = new ErrorModel('未登录');
         return false;
     }
     author = username;
-    const listData = await getList(author, keyword);
+    const listData = await getList(username, keyword,page,total);
 
     ctx.body = new SuccessModel(listData);
 });
+
+
+router.get('/list/count', async function (ctx, next) {
+    let author = ctx.query.author || '';
+    let username = ctx.query.username || '';
+    const keyword = ctx.query.keyword || '';
+
+    author = username;
+    const count = await getListCount(username, keyword);
+
+    ctx.body = new SuccessModel(count);
+});
+
+
 
 router.get('/detail', async function (ctx, next) {
     const data = await getDetail(ctx.query.id);

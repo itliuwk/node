@@ -7,7 +7,7 @@ const {exec} = require('../db/mysql');
  * @param keyword
  * @returns {Promise<T | never>}
  */
-const getList = async (author, keyword) => {
+const getList = async (author, keyword,page,total) => {
 
 
     let sql = `select * from blogs where 1=1 `;
@@ -17,15 +17,43 @@ const getList = async (author, keyword) => {
     if (keyword) {
         sql += `and title like '%${keyword}%' `
     }
-    sql += `order by createtime desc;`;
+    sql += `order by createtime desc `;
+
+    if (page) {
+        sql += ` LIMIT ${page},${total};`
+    }
 
     // 返回 promise
     // return exec(sql).then(row => {
     //     return row;
     // })
     return await exec(sql);
-
 };
+
+
+/**
+ * 博客列表总数
+ * @param author
+ * @param keyword
+ * @returns {Promise<T | never>}
+ */
+const getListCount = async (author, keyword) => {
+
+
+    let sql = `select count(id) from blogs where 1=1 `;
+    if (author) {
+        sql += `and author='${author}' `
+    }
+    if (keyword) {
+        sql += `and title like '%${keyword}%' `
+    }
+
+    return await exec(sql).then(row => {
+        return row[0];
+    })
+};
+
+
 
 /**
  * 博客详情
@@ -53,7 +81,7 @@ const newBlog = async (blogData) => {
     // blogData  是一个博客  对象  包含title content 属性
     const {title, subtitle, content, author, createTime = Date.now()} = blogData;
 
-    let sql = ` insert into blogs (title,subtitle,content,createTime,author) values('${title}','${subtitle}','${content}',${createTime},'${author}');`;
+    let sql = ` insert into blogs (title,subtitle,content,createTime,author) values('${title}','${subtitle}',"${content}",${createTime},'${author}');`;
 
     return await exec(sql).then(insertData => {
         return {
@@ -64,7 +92,7 @@ const newBlog = async (blogData) => {
 
 
 const updateBlog = async (id, blogData) => {
-    const {title, content} = blogData;
+    const {title,subtitle, content} = blogData;
 
     let sql = ` update blogs set title='${title}', subtitle='${subtitle}', content='${content}' where id=${id}`;
 
@@ -91,6 +119,7 @@ const delBlog = async (id, author) => {
 
 module.exports = {
     getList,
+    getListCount,
     getDetail,
     newBlog,
     updateBlog,

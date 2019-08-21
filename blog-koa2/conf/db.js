@@ -19,13 +19,34 @@ if (env === 'dev') {
 }
 
 if (env === 'production') {
+    // 三丰云
+
+    // MYSQL_CONF = {
+    //     host: '111.67.193.216',
+    //     user: 'myblog',
+    //     password: '101207302das',
+    //     port: '3306',
+    //     database: 'myblog'
+    // };
+
+
+    // 腾讯云
     MYSQL_CONF = {
-        host: 'localhost',
-        user: 'root',
+        host: '106.52.232.16',
+        user: 'myblog',
         password: '101207302das',
-        port: '3308',
+        port: '3306',
         database: 'myblog'
     };
+
+    // MYSQL_CONF = {
+    //     host: 'localhost',
+    //     user: 'root',
+    //     password: '101207302das',
+    //     port: '3308',
+    //     database: 'myblog'
+    // };
+
 
     REDIS_CONF = {
         port: 6379,

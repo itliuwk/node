@@ -10,7 +10,7 @@ const {exec} = require('../db/mysql');
  * @param total
  * @returns {Promise<T | never>}
  */
-const getList = async (author, keyword,classify,page,total) => {
+const getList = async (author, keyword, classify, page, total) => {
 
 
     let sql = `select * from blogs where 1=1 `;
@@ -60,7 +60,6 @@ const getListCount = async (author, keyword) => {
 };
 
 
-
 /**
  * 博客详情
  * @param id
@@ -85,9 +84,14 @@ const getDetail = async (id) => {
  */
 const newBlog = async (blogData) => {
     // blogData  是一个博客  对象  包含title content 属性
-    const {title, subtitle, content, author, createTime = Date.now()} = blogData;
+    const {title, subtitle, content, classify, author, createTime = Date.now()} = blogData;
 
-    let sql = ` insert into blogs (title,subtitle,content,createTime,author) values('${title}','${subtitle}',"${content}",${createTime},'${author}');`;
+    let sql = ` insert into blogs (title,content,subtitle,createtime,author) values('${title}',"${content}",'${subtitle}',${createTime},'${author}');`;
+
+
+
+
+    console.log(sql);
 
     return await exec(sql).then(insertData => {
         return {
@@ -98,7 +102,7 @@ const newBlog = async (blogData) => {
 
 
 const updateBlog = async (id, blogData) => {
-    const {title,subtitle, content} = blogData;
+    const {title, subtitle, content} = blogData;
 
     let sql = ` update blogs set title='${title}', subtitle='${subtitle}', content='${content}' where id=${id}`;
 

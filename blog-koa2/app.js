@@ -14,6 +14,7 @@ const cors = require('koa2-cors');
 
 const blog = require('./routes/blog')
 const user = require('./routes/user')
+const claccify = require('./routes/claccify')
 
 const {REDIS_CONF} = require('./conf/db');
 
@@ -71,6 +72,7 @@ app.use(async (ctx, next) => {
 
 app.use(blog.routes(), blog.allowedMethods())
 app.use(user.routes(), user.allowedMethods())
+app.use(claccify.routes(), claccify.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {

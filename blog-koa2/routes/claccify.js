@@ -15,9 +15,7 @@ router.get('/list', async function (ctx, next) {
 
 router.get('/value', async function (ctx, next) {
     const value = ctx.query.value || '';
-    console.log(value);
     const listData = await getClassifyLabel(value);
-
     ctx.body = new SuccessModel(listData);
 });
 

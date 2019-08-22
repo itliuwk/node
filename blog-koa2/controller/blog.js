@@ -13,26 +13,41 @@ const {exec} = require('../db/mysql');
 const getList = async (author, keyword, classify, page, total) => {
 
 
-    let sql = `select * from blogs where 1=1 `;
+    // let sql = `select * from blogs where 1=1 `;
+    // if (author) {
+    //     sql += `and author='${author}' `
+    // }
+    // if (keyword) {
+    //     sql += `and title like '%${keyword}%' `
+    // }
+    // if (classify) {
+    //     sql += `and title like '%${classify}%' `
+    // }
+    // sql += `order by createtime desc `;
+    //
+    // if (page) {
+    //     sql += ` LIMIT ${page},${total};`
+    // }
+
+
+    let sql = ` select * from blogs a ,classify b where 1=1 `;
+
     if (author) {
-        sql += `and author='${author}' `
+        sql += `and a.author='${author}' `
     }
     if (keyword) {
-        sql += `and title like '%${keyword}%' `
+        sql += `and a.title like '%${keyword}%' `
     }
-    if (classify) {
-        sql += `and title like '%${classify}%' `
-    }
-    sql += `order by createtime desc `;
+
+    sql += `and a.classify =b.\`value\` order by a.createtime desc `;
 
     if (page) {
         sql += ` LIMIT ${page},${total};`
     }
 
-    // 返回 promise
-    // return exec(sql).then(row => {
-    //     return row;
-    // })
+
+
+
     return await exec(sql);
 };
 
@@ -54,6 +69,8 @@ const getListCount = async (author, keyword) => {
         sql += `and title like '%${keyword}%' `
     }
 
+
+
     return await exec(sql).then(row => {
         return row[0];
     })
@@ -67,7 +84,8 @@ const getListCount = async (author, keyword) => {
  */
 const getDetail = async (id) => {
 
-    let sql = ` select * from blogs where id = '${id}' `;
+    // let sql = ` select * from blogs where id = '${id}' `;
+    let sql = ` select * from blogs a , classify b where a.id=${id} and b.value =a.classify;`;
 
     // 返回 promise
 
@@ -86,12 +104,12 @@ const newBlog = async (blogData) => {
     // blogData  是一个博客  对象  包含title content 属性
     const {title, subtitle, content, classify, author, createTime = Date.now()} = blogData;
 
-    let sql = ` insert into blogs (title,content,subtitle,createtime,author) values('${title}',"${content}",'${subtitle}',${createTime},'${author}');`;
+    // let sql = ` insert into blogs (title,content,subtitle,createtime,author) values('${title}',"${content}",'${subtitle}',${createTime},'${author}');`;
+
+    let sql = ` insert into blogs (title,content,subtitle,createtime,author,classify) values('${title}',"${content}",'${subtitle}',${createTime},'${author}','${classify}');`;
 
 
 
-
-    console.log(sql);
 
     return await exec(sql).then(insertData => {
         return {

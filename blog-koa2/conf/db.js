@@ -4,11 +4,19 @@ let MYSQL_CONF;
 let REDIS_CONF;
 
 if (env === 'dev') {
+    // MYSQL_CONF = {
+    //     host: 'localhost',
+    //     user: 'root',
+    //     password: '101207302das',
+    //     port: '3308',
+    //     database: 'myblog'
+    // };
+
     MYSQL_CONF = {
-        host: 'localhost',
-        user: 'root',
+        host: '106.52.232.16',
+        user: 'myblog',
         password: '101207302das',
-        port: '3308',
+        port: '3306',
         database: 'myblog'
     };
 

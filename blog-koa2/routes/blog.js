@@ -11,13 +11,14 @@ router.get('/list', async function (ctx, next) {
     const keyword = ctx.query.keyword || '';
     const page = ctx.query.page || '';
     const total = ctx.query.total || '';
+    const classify = ctx.query.classify || '';
 
     if (username == null) {
         ctx.body = new ErrorModel('未登录');
         return false;
     }
     author = username;
-    const listData = await getList(username, keyword,page,total);
+    const listData = await getList(username, keyword,classify,page,total);
 
     ctx.body = new SuccessModel(listData);
 });

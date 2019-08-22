@@ -5,9 +5,12 @@ const {exec} = require('../db/mysql');
  * 博客列表
  * @param author
  * @param keyword
+ * @param classify
+ * @param page
+ * @param total
  * @returns {Promise<T | never>}
  */
-const getList = async (author, keyword,page,total) => {
+const getList = async (author, keyword,classify,page,total) => {
 
 
     let sql = `select * from blogs where 1=1 `;
@@ -16,6 +19,9 @@ const getList = async (author, keyword,page,total) => {
     }
     if (keyword) {
         sql += `and title like '%${keyword}%' `
+    }
+    if (classify) {
+        sql += `and title like '%${classify}%' `
     }
     sql += `order by createtime desc `;
 
